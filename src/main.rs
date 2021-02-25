@@ -2,8 +2,22 @@ use anyhow::{Context, bail};
 
 fn copy_to_temp(path: impl AsRef<std::path::Path>, temp: impl AsRef<std::path::Path>) -> Result<(), anyhow::Error> {
     let new_path = temp.as_ref().join(path.as_ref().file_name().with_context(|| format!("Unable to determine file name for {:?}", path.as_ref()))?);
-    std::fs::copy(&path, &new_path).with_context(||format!("Unable to copy {:?} to temporary name {:?}", path.as_ref(), new_path))?;
+    let safe_new_path = if new_path.extension().and_then(|ext| ext.to_str()).map(|ext| ext.to_lowercase()) != Some("p00".to_string()) {
+        safe_file_name(&new_path)
+    } else {
+        new_path
+    };
+    std::fs::copy(&path, &safe_new_path).with_context(||format!("Unable to copy {:?} to temporary name {:?}", path.as_ref(), safe_new_path))?;
     Ok(())
+}
+
+fn safe_file_name(path: impl AsRef<std::path::Path>) -> std::path::PathBuf {
+    let mut buffer = path.as_ref().to_owned();
+    buffer.set_file_name("song");
+    if let Some(ext) = path.as_ref().extension() {
+        buffer.set_extension(ext);
+    }
+    buffer
 }
 
 fn main() -> Result<(), anyhow::Error> {
