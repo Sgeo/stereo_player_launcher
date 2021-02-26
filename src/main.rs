@@ -2,11 +2,7 @@ use anyhow::{Context, bail};
 
 fn copy_to_temp(path: impl AsRef<std::path::Path>, temp: impl AsRef<std::path::Path>) -> Result<(), anyhow::Error> {
     let new_path = temp.as_ref().join(path.as_ref().file_name().with_context(|| format!("Unable to determine file name for {:?}", path.as_ref()))?);
-    let safe_new_path = if new_path.extension().and_then(|ext| ext.to_str()).map(|ext| ext.to_lowercase()) != Some("p00".to_string()) {
-        safe_file_name(&new_path)
-    } else {
-        new_path
-    };
+    let safe_new_path = safe_file_name(&new_path);
     std::fs::copy(&path, &safe_new_path).with_context(||format!("Unable to copy {:?} to temporary name {:?}", path.as_ref(), safe_new_path))?;
     Ok(())
 }
@@ -28,10 +24,6 @@ fn main() -> Result<(), anyhow::Error> {
 
     let tempdir = tempfile::tempdir().context("Unable to create temporary directory")?;
 
-    for player_file_entry in std::fs::read_dir(exe_dir.join("StereoPlayer10.5")).context("Unable to open StereoPlayer10.5 directory")? {
-        let player_file_path = player_file_entry.context("Unable to examine Stereo Player directory entry")?.path();
-        copy_to_temp(&player_file_path, tempdir.path())?;
-    }
 
     for mus_file_name in std::env::args_os().skip(1) {
         let path: std::path::PathBuf = mus_file_name.into();
@@ -55,9 +47,9 @@ fn main() -> Result<(), anyhow::Error> {
 
     let config_path = exe_dir.join("stereoplayer.conf");
 
-    let p00_path = tempdir.path().join("stereoplayerv10.p00");
+    let d64_path = exe_dir.join("stereoplayer105.d64");
 
-    let _vice = std::process::Command::new(x64sc_path).arg("-addconfig").arg(config_path).arg("-fs8").arg(tempdir.path()).arg(p00_path).output()?;
+    let _vice = std::process::Command::new(x64sc_path).arg("-addconfig").arg(config_path).arg("-fs9").arg(tempdir.path()).arg("-8").arg(&d64_path).arg(&d64_path).output()?;
 
     
 
