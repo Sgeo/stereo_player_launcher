@@ -23,7 +23,7 @@ jobs:
       - name: Install Rust minimal stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable-i686-pc-windows-msvc
+          toolchain: stable
           profile: minimal
           target: i686-pc-windows-msvc
           override: true
