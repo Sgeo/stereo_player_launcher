@@ -23,9 +23,9 @@ jobs:
       - name: Install Rust minimal stable
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: stable-i686-pc-windows-msvc
           profile: minimal
-          target: i686-pc-windows-gnu
+          target: i686-pc-windows-msvc
           override: true
 
       - name: Build
@@ -33,7 +33,7 @@ jobs:
         with:
           use-cross: true
           command: build
-          args: --target i686-pc-windows-gnu --release
+          args: --target i686-pc-windows-msvc --release
           
       - name: Download VICE 3.5
         # You may pin to the exact commit or the version.
