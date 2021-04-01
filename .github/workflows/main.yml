@@ -50,7 +50,7 @@ jobs:
           # archive path to extract
           pathSource: GTK3VICE-3.5-win32.7z
           # path to place the extract
-          pathTarget: $GITHUB_WORKSPACE/assets
+          pathTarget: assets
           
-      - run: tree \
+      - run: tree /F /A \
           
