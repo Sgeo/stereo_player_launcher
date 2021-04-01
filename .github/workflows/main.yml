@@ -40,7 +40,8 @@ jobs:
         uses: carlosperate/download-file-action@v1.0.3
         with:
           # URL of the file to download
-          file-url: https://csdb.dk/release/download.php?id=245174
+          file-url: 'https://csdb.dk/release/download.php?id=245174'
+          file-name: GTK3VICE-3.5-win32.7z
         
           
       - name: Extract VICE 3.5
