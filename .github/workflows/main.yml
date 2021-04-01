@@ -52,5 +52,5 @@ jobs:
           # path to place the extract
           pathTarget: $GITHUB_WORKSPACE/assets
           
-      - run: ls -l /
+      - run: tree \
           
