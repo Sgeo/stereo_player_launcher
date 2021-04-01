@@ -7,6 +7,10 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'Release name'
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -53,4 +57,14 @@ jobs:
           pathTarget: assets
           
       - run: tree /F /A \
+      
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.events.inputs.name }}
+          files: |
+            assets/*
+            target/i686-pc-windows-msvc/release/stereo_player_launcher.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
