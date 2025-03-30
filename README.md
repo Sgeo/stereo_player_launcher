@@ -7,7 +7,7 @@ Stereo Player Launcher provides an easy way to listen to music from the [Compute
 ## Installation
 
 1. Ensure that the [VICE emulator](https://vice-emu.sourceforge.io/) is installed. This launcher has been tested with VICE 3.9 and might not work with other versions.
-1. Extract the files from the [latest release](releases/latest).
+1. Extract the files from the [latest release](https://github.com/Sgeo/stereo_player_launcher/releases/latest).
 1. If `x64sc` is not on your PATH, update `stereo_player_launcher.ini` so that it points to the correct location.
 1. Associate `stereo_player_launcher` with `.mus` files.
 
