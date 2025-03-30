@@ -1,4 +1,19 @@
 use anyhow::{Context, bail};
+use ini::{Ini, ParseOption};
+
+fn vice_path_from_config(exe_dir: &std::path::Path) -> Result<String, anyhow::Error> {
+    let conf = Ini::load_from_file_opt(exe_dir.join("stereo_player_launcher.ini"), ParseOption {
+        enabled_quote: false,
+        enabled_escape: false
+    })?;
+    let section = conf.section(Some("vice")).context("Unable to find [vice] section")?;
+    let vice_path = section.get("vice_path").context("Unable to find vice_path in [vice] section")?;
+    Ok(vice_path.to_owned())
+}
+
+fn vice_path(exe_dir: &std::path::Path) -> String {
+    vice_path_from_config(exe_dir).unwrap_or("x64sc".to_owned())
+}
 
 fn copy_to_temp(path: impl AsRef<std::path::Path>, temp: impl AsRef<std::path::Path>) -> Result<(), anyhow::Error> {
     let new_path = temp.as_ref().join(path.as_ref().file_name().with_context(|| format!("Unable to determine file name for {:?}", path.as_ref()))?);
@@ -40,16 +55,11 @@ fn main() -> Result<(), anyhow::Error> {
         }
     }
 
-    let x64sc_path = match std::env::var_os("VICE") {
-        Some(vice_os_string) => std::path::PathBuf::from(vice_os_string),
-        None => exe_dir.join("GTK3VICE-3.5-win32").join("bin").join("x64sc")
-    };
-
     let config_path = exe_dir.join("stereoplayer.conf");
 
     let d64_path = exe_dir.join("stereoplayer105.d64");
 
-    let _vice = std::process::Command::new(x64sc_path).arg("-addconfig").arg(config_path).arg("-fs9").arg(tempdir.path()).arg("-8").arg(&d64_path).arg(&d64_path).output()?;
+    let _vice = std::process::Command::new(vice_path(&exe_dir)).arg("-addconfig").arg(config_path).arg("-fs9").arg(tempdir.path()).arg("-8").arg(&d64_path).arg(&d64_path).output()?;
 
     
 
