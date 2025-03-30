@@ -16,6 +16,15 @@ Stereo Player Launcher provides an easy way to listen to music from the [Compute
 1. Open a `.mus` file with `stereo_player_launcher`. The launcher will copy files with the same name and different extensions to a temporary directory, then run VICE.
 1. Press F1 in VICE to start the song.
 
+## Building
+
+1. `cargo build --release`
+1. Copy contents of `assets` directory to same location as the executable.
+
+## Notes
+
+The stereoplayer105.d64 contains a modified version of [StereoPlayer 10.5](https://csdb.dk/release/?id=101655) with a skip of the intro notice, removal of fastloaders (VICE is configured instead), and configuration options set.
+
 ## Credits
 
 Thanks to Mark A. Dickenson for StereoPlayer, Vanessa Ezekowitz for the upgrade to 10.5, and the VICE team for making an excellent Commodore 64 emulator.
