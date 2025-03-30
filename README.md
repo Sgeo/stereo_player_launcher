@@ -19,7 +19,7 @@ Stereo Player Launcher provides an easy way to listen to music from the [Compute
 ## Building
 
 1. `cargo build --release`
-1. Copy contents of `assets` directory and `stereo_player_launcher.ini` to same location as the executable.
+1. Copy contents of `assets` directory to same location as the executable.
 
 ## Notes
 
